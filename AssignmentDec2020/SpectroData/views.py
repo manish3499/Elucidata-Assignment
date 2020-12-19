@@ -21,8 +21,12 @@ class FileUploadView(APIView):
     parser_classes = [FileUploadParser]
 
     def post(self, request, format=None):
-        file_obj = request.data['file']
-        path = default_storage.save('SpectroData/Data/data.xlsx', ContentFile(file_obj.read()))
+        try:
+            file_obj = request.data['file']
+            path = default_storage.save('SpectroData/Data/data.xlsx', ContentFile(file_obj.read()))
+        except KeyError:
+            print('No file attached')
+            return Response(status=403)
         return Response(status=204)
 
 @api_view(('GET',))
