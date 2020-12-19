@@ -26,8 +26,8 @@ class FileUploadView(APIView):
             path = default_storage.save('SpectroData/Data/data.xlsx', ContentFile(file_obj.read()))
         except KeyError:
             print('No file attached')
-            return Response(status=403)
-        return Response(status=204)
+            return Response({"error": "Upload file missing."}, status=403)
+        return Response({"message": "File uploaded successfully."} ,status=204)
 
 @api_view(('GET',))
 def read_file(self):
